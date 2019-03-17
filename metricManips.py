@@ -13,6 +13,7 @@ class Number():
         self.power = power
         self.value = selectNumbers(sigFigs, power)
         self.answer = roundValue(convertValue(units,self.value),sigFigs)
+        self.units = units
 
 def selectUnits():
     units = []
@@ -61,18 +62,18 @@ def convertValue(units,value):
     answer = Decimal(value)*10**change
     return str(answer)
 
-def checkAnswer(units, answer, value):
+def checkAnswer(answer, value):
     if answer == '':        #Check for null result.
         return "Please remeber to enter a response."
 
     if answer[0] == ".":    #Convert '.xx' to '0.xx'.
-            answer = "0"+answer
+        answer = "0"+answer
 
     try:
         if Decimal(answer) == Decimal(value.answer):    #Check for exact result.
             return "CORRECT!"
         else:
-            return "Nope.  The correct answer is {} {}".format(value.answer, units[3])
+            return "Nope.  The correct answer is {} {}".format(value.answer, value.units[3])
     except:
         return 'Please enter a numerical result.'
 
@@ -115,9 +116,9 @@ def roundValue(value, sigFigs):
 
 def sciToStd(value, sigFigs):
     powerIndex = value.find('E')
-    power = -int(value[powerIndex+1:])-1
+    numZeros = -int(value[powerIndex+1:])-1
     noDecimal = value[:powerIndex].replace('.','')
-    newValue = "0."+"0"*power+noDecimal
+    newValue = "0."+"0"*numZeros+noDecimal
     return newValue
 
 for x in range(4):
@@ -126,12 +127,7 @@ for x in range(4):
     sigFigs = random.randrange(1,4)
     power = random.randrange(-3,4)
     value = Number(sigFigs, power, units)
-    for index in range(2):
-        if units[index][1] == 'base':
-            units.append(base)
-        else:
-            units.append(units[index][0]+base)
 
     text = "Convert {} {} into {}: ".format(value.value, units[2], units[3])
     answer = input(text)
-    print(checkAnswer(units, answer, value))
+    print(checkAnswer(answer, value))

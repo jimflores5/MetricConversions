@@ -7,13 +7,26 @@ base_units = ['m','L','g','s']
 prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
 no_excuse_prefixes = [('k','kilo',3), (base_units,'base',0), ('c','centi',-2), ('m','milli',-3)]
 
+class Number():
+    def __init__(self, sigFigs, power, units):
+        self.sigFigs = sigFigs
+        self.power = power
+        self.value = selectNumbers(sigFigs, power)
+        self.answer = roundValue(convertValue(units,self.value),sigFigs)
+
 def selectUnits():
-    units = []  #units = ['starting prefix', 'requested prefix']
-    while len(units) != 2:
+    units = []
+    base = random.choice(base_units) #Choose base unit.
+    while len(units) != 2:              #Pick the starting and ending prefixes.
         new_unit = random.choice(prefixes)
         if new_unit not in units:
             units.append(new_unit)
-    return units
+    for index in range(len(units)):     #Generate unit abbreviations (e.g. 'kg').
+        if units[index][1] == 'base':
+            units.append(base)
+        else:
+            units.append(units[index][0]+base)
+    return units        #units = ['starting prefix', 'ending prefix', 'starting abbr', 'ending abbr']
 
 def selectNumbers(sigFigs, power):
     allDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -43,17 +56,82 @@ def selectNumbers(sigFigs, power):
                 value += random.choice(allDigits)
         return value
 
-for x in range(10):
+def convertValue(units,value):
+    change = Decimal(units[0][2] - units[1][2])
+    answer = Decimal(value)*10**change
+    return str(answer)
+
+def checkAnswer(units, answer, value):
+    if answer == '':        #Check for null result.
+        return "Please remeber to enter a response."
+
+    if answer[0] == ".":    #Convert '.xx' to '0.xx'.
+            answer = "0"+answer
+
+    try:
+        if Decimal(answer) == Decimal(value.answer):    #Check for exact result.
+            return "CORRECT!"
+        else:
+            return "Nope.  The correct answer is {} {}".format(value.answer, units[3])
+    except:
+        return 'Please enter a numerical result.'
+
+def roundValue(value, sigFigs):      
+    if "E" in value and '-' in value:
+        return sciToStd(value, sigFigs)
+
+    decimalIndex = value.find('.')
+    if decimalIndex < 0:
+        decimalIndex = len(value)
+
+    if Decimal(value)<1:
+        placeholders = 0
+        for x in range(2,len(value)):
+            if value[x] == "0":
+                placeholders += 1
+            else:
+                break
+
+        roundToSigFigs = round(Decimal(value)*10**placeholders,sigFigs)
+        addPlaceholders = round(roundToSigFigs/10**placeholders,sigFigs+placeholders)
+
+        if len(str(roundToSigFigs))-sigFigs < 3:
+            result = str(addPlaceholders)+"0"*(2-(len(str(roundToSigFigs))-sigFigs))
+        else:
+            result = str(addPlaceholders)
+        return result
+    else:
+        roundToSigFigs = round(float(value)/10**decimalIndex,sigFigs)
+        addZeros = round(roundToSigFigs*10**decimalIndex,sigFigs-decimalIndex)
+
+        if sigFigs <= decimalIndex:
+            result = str(int(addZeros))
+        elif len(str(addZeros))-sigFigs <= 0:
+            result = str(addZeros)+"0"*(sigFigs-len(str(addZeros))+1)
+        else:
+            result = str(addZeros)
+
+        return result
+
+def sciToStd(value, sigFigs):
+    powerIndex = value.find('E')
+    power = -int(value[powerIndex+1:])-1
+    noDecimal = value[:powerIndex].replace('.','')
+    newValue = "0."+"0"*power+noDecimal
+    return newValue
+
+for x in range(4):
     base = random.choice(base_units) #Choose base unit.
     units = selectUnits()
     sigFigs = random.randrange(1,4)
     power = random.randrange(-3,4)
-    value = selectNumbers(sigFigs, power)
+    value = Number(sigFigs, power, units)
     for index in range(2):
         if units[index][1] == 'base':
             units.append(base)
         else:
             units.append(units[index][0]+base)
 
-    text = "Number, start units, end units: {} {} {}\n".format(value, units[2], units[3])
-    print(text)   
+    text = "Convert {} {} into {}: ".format(value.value, units[2], units[3])
+    answer = input(text)
+    print(checkAnswer(units, answer, value))

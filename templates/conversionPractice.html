@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            <form action="/converstion_practice/{{type}}" method="post">
+                <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.7vw">
+                    {% for item in range(4) %}
+                    <li style="color:blue">
+                        <div class="row" {% if page == 1 %}style="font-size:1.5vw"{% else %}style="font-size:1.6vw"{% endif %}>
+                            <div class="col-5 wrapper text-right">
+                                <label for="answer{{item}}"><span>
+                                    {{practiceList[item][0]}}
+                                    </span>=</label>
+                            </div>
+                            <div class="col-3 wrapper text-center">
+                                <input onkeyup="display(this,{{item}})" name="answer{{item}}" type="text" value="{{answers[item]}}" size = "10"></br>
+                            </div>
+                            <div class="col-1 wrapper text-left">
+                                {% if correct[item] %}
+                                    <label for="answer{{item}}" style="color:brown" id="dynamicFormula{{item}}">{% for item in practiceList[item][1] %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
+                                {% else %}
+                                    <label for="answer{{item}}" style="color:brown" id="dynamicFormula{{item}}"></label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% if messages %}
+                        {% set message = messages[item] %}                                        
+                        {% if message[0] != 'error' %}
+                            <span class='{{message[0]}}' style="font-size: 14pt">{{message[1]}}</span>
+                        {% else %}
+                            <div class="btn-group dropright">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
+                                    <span class='{{message[0]}}'>{{message[1]}}</span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <p class="dropdown-item" style="font-size: 20pt; color:red">{% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                        <hr>
+                        <input name="name{{item}}" type="hidden" value="{{practiceList[item][0]}}">
+                        <input name="formula{{item}}" type="hidden" value="{{practiceList[item][1]}}">
+                        <input name="page" type="hidden" value="{{page}}">
+                    {% endfor %}
+                </ul>
+                {% if numCorrect != 4 %}
+                    <a class="btn btn-info mb-3" href="/ffntutorial/{{page}}" role="button">Refresh Compounds</a>
+                    <input class="btn btn-success mb-3" type="submit" value="Check">
+                {% else %}
+                    <a class="btn btn-info mb-3" href="/ffntutorial/{{page}}" role="button">Refresh Compounds</a>
+                    <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
+                {% endif %}
+                <script>
+                    function display(entry,row)
+                    {
+                        var k=entry.value;
+                        var result = '';
+                        digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                        for (char in k){
+                            if (k[char] in digits){
+                                result += k[char].sub();
+                            }
+                            else{
+                                result += k[char];
+                            }
+                        }
+                        document.getElementById("dynamicFormula"+String(row)).innerHTML = result;
+                    }
+                </script>
+            </form>
+        {% endwith %}
+        <div class = 'row'>
+            <div class="col-5">
+                <div class='wrapper text-center'>
+                    <h3 class='wrapper text-center'><u>Test Value</u></h3>
+                    <p>{{value}} {{units[2]}}</p>
+                </div>
+            </div>
+            <div class = 'col-5'>
+                <div class='wrapper text-center'>
+                    <h3 class='wrapper text-center'><u>Request</u></h3>
+                    <p>{{units[3]}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}  

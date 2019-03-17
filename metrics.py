@@ -53,32 +53,45 @@ def selectNumbers(sigFigs, power):
                 value += random.choice(allDigits)
         return value
 
+def convertValue(units,value):
+    #TODO - Determine the correct answer for the requested metric conversion.
+    return
+
+def checkAnswer(units, answer, value):
+    if answer == '':        #Check for null result.
+        return False
+
+    if answer[0] == ".":    #Convert '.xx' to '0.xx'.
+        answer = "0"+answer
+
+    if answer == convertValue(units, value):    #Check for exact result.
+        return True
+    else:
+        return False
+
 @app.route('/')
 def index():
     #session.clear()
-    units = selectUnits()               #Generate starting & ending units
-    sigFigs = random.randrange(1,4)
-    power = random.randrange(-3,4)
-    value = selectNumbers(sigFigs, power)
-    return render_template('index.html',title="Metric Practice", value = value, units = units)
+    return render_template('index.html',title="Metric Practice")
 
 @app.route('/conversion_practice/<type>', methods=['POST', 'GET'])
 def conversion_practice(type):
     if request.method == 'POST':
         answer = request.form['answer']
-        actualSigFigs = request.form['actualSigFigs']
+        units = request.form['units']
         value = request.form['value']
-        if answer==actualSigFigs:
+        if checkAnswer(units, answer, value):
             flash('Correct!  :-)', 'correct')
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
         
-        return render_template('countingSigFigs.html', value=value, sigFigs = actualSigFigs, answer = answer)
+        return render_template('countingSigFigs.html', value=value, units = units, answer = answer, type = type)
 
+    units = selectUnits()               #Generate starting & ending units
     sigFigs = random.randrange(1,4)
-    power = random.randrange(-3,3)
-    value = selectNumbers(sigFigs,power)
-    return render_template('conversionPractice.html',title="kilo - milli conversions", value=value, type = type)
+    power = random.randrange(-3,4)
+    value = selectNumbers(sigFigs, power)
+    return render_template('conversionPractice.html',title="Metric Conversion Practice", units = units, value=value, type = type)
 
 if __name__ == '__main__':
     app.run()

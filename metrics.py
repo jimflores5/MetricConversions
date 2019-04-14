@@ -6,6 +6,7 @@ from metricManips import Number, selectUnits, selectNumbers, convertValue, round
 
 base_units = ['m','L','g','s']
 prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
+standard_prefixes = [('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3)]
 no_excuse_prefixes = [('k','kilo',3), (base_units,'base',0), ('c','centi',-2), ('m','milli',-3)]
 
 app = Flask(__name__)
@@ -29,8 +30,10 @@ def index():
     #session.clear()
     return render_template('index.html',title="Metric Practice")
 
-@app.route('/conversion_practice/<type>', methods=['POST', 'GET'])
-def conversion_practice(type):
+@app.route('/conversion_practice/<prefixes>', methods=['POST', 'GET'])
+def conversion_practice(prefixes):
+    practiceList = []
+    answers = []
     if request.method == 'POST':
         answer = request.form['answer']
         units = request.form['units']
@@ -40,13 +43,17 @@ def conversion_practice(type):
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
         
-        return render_template('countingSigFigs.html', value=value, units = units, answer = answer, type = type)
+        return render_template('countingSigFigs.html', value=value, units = units, answer = answer, prefixes = prefixes)
 
-    units = selectUnits()               #Generate starting & ending units
-    sigFigs = random.randrange(1,4)
-    power = random.randrange(-3,4)
-    value = Number(sigFigs, power, units)
-    return render_template('conversionPractice.html',title="Metric Conversion Practice", units = units, value=value, type = type)
+    while len(practiceList) <= 4:
+        units = selectUnits(prefixes)              #Generate starting & ending units
+        sigFigs = random.randrange(1,4)
+        power = random.randrange(-3,4)
+        value = Number(sigFigs, power, units)
+        if value not in practiceList:
+            practiceList.append(value)
+
+    return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, prefixes = prefixes)
 
 if __name__ == '__main__':
     app.run()

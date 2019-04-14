@@ -4,7 +4,8 @@ import cgi
 from decimal import Decimal
 
 base_units = ['m','L','g','s']
-prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
+all_prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
+standard_prefixes = [('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3)]
 no_excuse_prefixes = [('k','kilo',3), (base_units,'base',0), ('c','centi',-2), ('m','milli',-3)]
 
 class Number():
@@ -15,11 +16,16 @@ class Number():
         self.answer = roundValue(convertValue(units,self.value),sigFigs)
         self.units = units
 
-def selectUnits():
+def selectUnits(prefixes = 'all'):
     units = []
     base = random.choice(base_units) #Choose base unit.
     while len(units) != 2:              #Pick the starting and ending prefixes.
-        new_unit = random.choice(prefixes)
+        if prefixes == 'no_excuse':
+            new_unit = random.choice(no_excuse_prefixes)
+        elif prefixes == 'standard':
+            new_unit = random.choice(standard_prefixes)
+        else:
+            new_unit = random.choice(all_prefixes)
         if new_unit not in units:
             units.append(new_unit)
     for index in range(len(units)):     #Generate unit abbreviations (e.g. 'kg').
@@ -121,13 +127,13 @@ def sciToStd(value, sigFigs):
     newValue = "0."+"0"*numZeros+noDecimal
     return newValue
 
-for x in range(4):
-    base = random.choice(base_units) #Choose base unit.
-    units = selectUnits()
-    sigFigs = random.randrange(1,4)
-    power = random.randrange(-3,4)
-    value = Number(sigFigs, power, units)
+def Main():
+    for x in range(4):
+        units = selectUnits()
+        sigFigs = random.randrange(1,4)
+        power = random.randrange(-3,4)
+        value = Number(sigFigs, power, units)
 
-    text = "Convert {} {} into {}: ".format(value.value, units[2], units[3])
-    answer = input(text)
-    print(checkAnswer(answer, value))
+        text = "Convert {} {} into {}: ".format(value.value, units[2], units[3])
+        answer = input(text)
+        print(checkAnswer(answer, value))

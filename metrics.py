@@ -27,7 +27,7 @@ def checkAnswer(correct_answer, answer):
 
 @app.route('/')
 def index():
-    #session.clear()
+    session.clear()
     return render_template('index.html',title="Metric Practice")
 
 @app.route('/conversion_practice/<type>', methods=['POST', 'GET'])
@@ -38,28 +38,30 @@ def conversion_practice(type):
         numCorrect = 0
         for item in range(4):
             answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
-            given_units = request.form['given_units'+str(item)]
-            desired_units = request.form['desired_units'+str(item)]
-            orig_value = request.form['value'+str(item)]
-            correct_answer = request.form['correct_answer'+str(item)]
-            practiceList.append([orig_value, correct_answer, given_units, desired_units]) #Pull original data into a list.
-            if checkAnswer(correct_answer, answers[item]):
+            value_dict = session.get('practiceList'+str(item),None)     #Retrieve original value (dictionary) and return to Number format.
+            value = Number(value_dict['sigFigs'], value_dict['power'], value_dict['units'])
+            value.answer = value_dict['answer']
+            value.value = value_dict['value']
+            practiceList.append(value)   
+            if checkAnswer(practiceList[item].answer, answers[item]):
                 numCorrect += 1
                 flash('Correct!  :-)', 'correct')
             else:
                 flash('Try again, or click here to reveal the answer.', 'error')
-        
-        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, checked = True, numCorrect = numCorrect)
+        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, numCorrect = numCorrect)
 
     while len(practiceList) <= 4:
         units = selectUnits(type)              #Generate starting & ending units
         sigFigs = random.randrange(1,4)
         power = random.randrange(-3,4)
         value = Number(sigFigs, power, units)
-        if value not in practiceList:       #TODO: Make practiceList format consistent between GET and POST events.
+        if value not in practiceList:    
             practiceList.append(value)
 
-    return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, type = type, checked = False)
+    for item in range(len(practiceList)):       #Store values in session as dictionaries
+        session['practiceList'+str(item)] = practiceList[item].__dict__
+
+    return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, type = type)
 
 if __name__ == '__main__':
     app.run()

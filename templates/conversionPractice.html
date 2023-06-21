@@ -7,7 +7,7 @@
         <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
             <form action="/conversion_practice/{{type}}" method="post">
                 <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.7vw">
-                    {% for item in range(4) %}
+                    {% for item in range(practiceList|length) %}
                         <li style="color:blue">
                             <div class="row">
                                 <div class="col-3 wrapper text-right">
@@ -39,7 +39,7 @@
                     {% endfor %}
                 </ul>
                 <div class="container wrapper text-center">
-                    {% if numCorrect != 4 %}
+                    {% if numCorrect != 5 %}
                         <a class="btn btn-info mb-3" href="/conversion_practice/{{type}}" role="button">New Conversions</a>
                         <input class="btn btn-success mb-3" type="submit" value="Check">
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
@@ -47,8 +47,8 @@
                         <a class="btn btn-info mb-3" href="/conversion_practice/{{type}}" role="button">New Conversions</a>
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
                     {% endif %}
-
                 </div>
+                <p>Progress = {{session['numCorrect']}}/{{session['num_attempted']}} ({{percentage}}%)</p>
             </form>
         {% endwith %}
     </div>

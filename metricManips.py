@@ -16,6 +16,9 @@ class Number():
         self.answer = roundValue(convertValue(units,self.value),sigFigs)
         self.units = units
 
+    def __str__(self):
+        return str(self.value)
+
 def selectUnits(prefixes = 'all'):
     units = []
     base = random.choice(base_units) #Choose base unit.

@@ -1,8 +1,14 @@
-h1 {
+.practice {
     text-decoration: underline;
+    font-size: 2.5vw;
 }
 
 .note {
-    font-size: x-large;
+    font-size: 1.5vw;
     color: brown;
+}
+
+.record {
+    text-align: center;
+    font-size: 1.25vw;
 }

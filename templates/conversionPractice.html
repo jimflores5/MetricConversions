@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=True) %}
-        <h1>Complete the following metric conversions.</h1>
+        <h1 class="practice">Complete the following metric conversions.</h1>
         <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
             <form action="/conversion_practice/{{type}}" method="post">
                 <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.7vw">
@@ -48,7 +48,7 @@
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
                     {% endif %}
                 </div>
-                <p>Progress = {{session['numCorrect']}}/{{session['num_attempted']}} ({{percentage}}%)</p>
+                <p class="record">Progress = {{session['numCorrect']}}/{{session['num_attempted']}} ({{percentage}}%)</p>
             </form>
         {% endwith %}
     </div>

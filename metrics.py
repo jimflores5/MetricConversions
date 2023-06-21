@@ -50,7 +50,7 @@ def conversion_practice(type):
                 flash('Try again, or click here to reveal the answer.', 'error')
         return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, numCorrect = numCorrect)
 
-    while len(practiceList) <= 4:
+    while len(practiceList) <= 5:
         units = selectUnits(type)              #Generate starting & ending units
         sigFigs = random.randrange(1,4)
         power = random.randrange(-3,4)
@@ -58,6 +58,7 @@ def conversion_practice(type):
         if value not in practiceList:    
             practiceList.append(value)
 
+    print(practiceList)
     for item in range(len(practiceList)):       #Store values in session as dictionaries
         session['practiceList'+str(item)] = practiceList[item].__dict__
 

@@ -3,6 +3,8 @@
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=True) %}
+        <h1>Complete the following metric conversions.</h1>
+        <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
             <form action="/conversion_practice/{{type}}" method="post">
                 <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.7vw">
                     {% for item in range(4) %}

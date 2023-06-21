@@ -70,7 +70,7 @@ def convertValue(units,value):
 
 def checkAnswer(answer, value):
     if answer == '':        #Check for null result.
-        return "Please remeber to enter a response."
+        return "Please remember to enter a response."
 
     if answer[0] == ".":    #Convert '.xx' to '0.xx'.
         answer = "0"+answer
@@ -79,7 +79,7 @@ def checkAnswer(answer, value):
         if Decimal(answer) == Decimal(value.answer):    #Check for exact result.
             return "CORRECT!"
         else:
-            return "Nope.  The correct answer is {} {}".format(value.answer, value.units[3])
+            return "Nope. The correct answer is {} {}".format(value.answer, value.units[3])
     except:
         return 'Please enter a numerical result.'
 

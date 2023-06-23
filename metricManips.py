@@ -130,7 +130,7 @@ def sciToStd(value, sigFigs):
     newValue = "0."+"0"*numZeros+noDecimal
     return newValue
 
-def Main():
+def main():
     for x in range(4):
         units = selectUnits()
         sigFigs = random.randrange(1,4)

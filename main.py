@@ -65,7 +65,7 @@ def conversion_practice(type):
 
     else:
         session['first_try'] = True
-        while len(practiceList) < 5:
+        while len(practiceList) < 10:
             units = selectUnits(type)              #Generate starting & ending units
             # sigFigs = random.randrange(1,4)
             sigFigs = 3

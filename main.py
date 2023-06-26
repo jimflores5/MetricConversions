@@ -35,8 +35,6 @@ def checkAnswer(correct_answer, answer):
 @app.route('/')
 def index():
     session.clear()
-    session['num_attempted'] = 0
-    session['numCorrect'] = 0
     return render_template('index.html',title="Metric Practice")
 
 @app.route('/conversion_practice/<type>', methods=['POST', 'GET'])
@@ -45,7 +43,7 @@ def conversion_practice(type):
     answers = []
     if request.method == 'POST':
         numCorrect = 0
-        for item in range(5):
+        for item in range(10):
             answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
             value_dict = session.get('practiceList'+str(item),None)     #Retrieve original value (dictionary) and return to Number format.
             value = Number(value_dict['sigFigs'], value_dict['power'], value_dict['units'])
@@ -60,11 +58,17 @@ def conversion_practice(type):
         if session['first_try']:
             session['numCorrect'] += numCorrect
             session['first_try'] = False
+            session['first_score'] = session['numCorrect']
+        elif numCorrect > session['first_score']:
+            correction = (numCorrect - session['first_score'])/2
+            session['numCorrect'] = session['first_score'] + correction
         percentage = round(session['numCorrect']/session['num_attempted']*100,1)
-        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, percentage = percentage)
+        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, percentage = percentage, numCorrect = numCorrect)
 
     else:
         session['first_try'] = True
+        session['num_attempted'] = 0
+        session['numCorrect'] = 0
         while len(practiceList) < 10:
             units = selectUnits(type)              #Generate starting & ending units
             # sigFigs = random.randrange(1,4)

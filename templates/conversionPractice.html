@@ -3,83 +3,52 @@
 {% block content %}
     <div class="container-sm wrapper text-center">
         {% with messages = get_flashed_messages(with_categories=True) %}
-        <h1 class="practice">Complete the following metric conversions.</h1>
-        <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
+            <h1 class="practice">Complete the following metric conversions</h1>
+            <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
             <form action="/conversion_practice/{{type}}" method="post">
-                <div class="row">
-                    <div class="col">
-                        <ol type="a" class="wrapper text-left mt-3" style="font-size: 1.7vw">
-                            {% for item in range((practiceList|length)//2) %}
-                                <li style="color:blue">
-                                    <div class="row">
-                                        <div class="col-3 wrapper text-right">
-                                            <label for="answer{{item}}"><span>
-                                                {{practiceList[item].value}} {{practiceList[item].units[2]}}
-                                                </span>=</label>
-                                        </div>
-                                        <div class="col-5 wrapper text-left input-group">
-                                            <input class="form-control" name="answer{{item}}" type="text" value="{{answers[item]}}"> 
-                                            <span>{{practiceList[item].units[3]}}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% if messages %}   <!--TODO: Check ChemSkills for better format for query, input box & feedback. -->
-                                    {% set message = messages[item] %}                                        
-                                    {% if message[0] != 'error' %}
-                                        <span class='{{message[0]}}' style="font-size: 14pt">{{message[1]}}</span>
-                                    {% else %}
-                                        <div class="btn-group dropright">
-                                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
-                                                <span class='{{message[0]}}'>{{message[1]}}</span>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <p class="dropdown-item" style="font-size: 20pt; color:red">{{practiceList[item].answer}}</p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-                                <hr>
-                            {% endfor %}
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <ol type="a" start="{{(practiceList|length)//2+1}}" class="wrapper text-left mt-3" style="font-size: 1.7vw">
-                            {% for item in range((practiceList|length)//2, practiceList|length) %}
-                                <li style="color:blue">
-                                    <div class="row">
-                                        <div class="col-3 wrapper text-right">
-                                            <label for="answer{{item}}"><span>
-                                                {{practiceList[item].value}} {{practiceList[item].units[2]}}
-                                                </span>=</label>
-                                        </div>
-                                        <div class="col-5 wrapper text-left">
-                                            <input class="form-control" name="answer{{item}}" type="text" value="{{answers[item]}}" size = "15"> {{practiceList[item].units[3]}}
-                                        </div>
-                                    </div>
-                                </li>
-                                {% if messages %}   <!--TODO: Check ChemSkills for better format for query, input box & feedback. -->
-                                    {% set message = messages[item] %}                                        
-                                    {% if message[0] != 'error' %}
-                                        <span class='{{message[0]}}' style="font-size: 14pt">{{message[1]}}</span>
-                                    {% else %}
-                                        <div class="btn-group dropright">
-                                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
-                                                <span class='{{message[0]}}'>{{message[1]}}</span>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <p class="dropdown-item" style="font-size: 20pt; color:red">{{practiceList[item].answer}}</p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-                                <hr>
-                            {% endfor %}
-                        </ol>
-                    </div>
-                </div>
-                
+                <table class="table table-striped quiz-table">
+                    <tbody>
+                        {% for row in range((practiceList|length)//2) %}
+                            <tr>
+                                <td class="text-center">
+                                    {{'abcde'[row]}}.
+                                </td>
+                                {% for column in range(2) %}
+                                    <td class="col-2 text-right" style="color:blue">
+                                        <label for="answer{{2*row+column}}">
+                                            {{practiceList[2*row+column].value}} {{practiceList[2*row+column].units[2]}} =
+                                        </label>
+                                    </td>
+                                    <td class="col-4 text-left">
+                                        <input name="answer{{2*row+column}}" type="text" value="{{answers[2*row+column]}}" id="answer{{2*row+column}}">
+                                        <label for="answer{{2*row+column}}" style="color:blue">
+                                            {{practiceList[2*row+column].units[3]}}
+                                        </label>
+                                        {% if messages %}   <!--TODO: Check ChemSkills for better format for query, input box & feedback. -->
+                                            {% set message = messages[2*row+column] %}                                        
+                                            {% if message[0] != 'error' %}
+                                                <span class='{{message[0]}}' style="font-size: 1.1vw">{{message[1]}}</span>
+                                            {% else %}
+                                                <div class="btn-group dropright">
+                                                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1vw; color:red">
+                                                        <span class='{{message[0]}}'>{{message[1]}}</span>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[2*row+column].answer}}</p>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br>
+
                 <div class="container wrapper text-center">
-                    {% if numCorrect != 5 %}
+                    {% if numCorrect != 10 %}
                         <a class="btn btn-info mb-3" href="/conversion_practice/{{type}}" role="button">New Conversions</a>
                         <input class="btn btn-success mb-3" type="submit" value="Check">
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
@@ -88,7 +57,10 @@
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
                     {% endif %}
                 </div>
-                <p class="record">Progress = {{session['numCorrect']}}/{{session['num_attempted']}} ({{percentage}}%)</p>
+                {% if not session['first_try'] %}
+                    <p class="record">First Attempt = {{session['first_score']}}/{{session['num_attempted']}}</p>
+                    <p class="record">With Corrections = {{session['numCorrect']}}/{{session['num_attempted']}} ({{percentage}}%)</p>                    
+                {% endif %}
             </form>
         {% endwith %}
     </div>

@@ -5,7 +5,7 @@
         {% with messages = get_flashed_messages(with_categories=True) %}
             <h1 class="practice">Complete the following metric conversions</h1>
             <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
-            <form action="/conversion_practice/{{type}}" method="post">
+            <form action="/conversion_practice/{{page}}" method="post">
                 <table class="table table-striped quiz-table">
                     <tbody>
                         {% for row in range((practiceList|length)//2) %}
@@ -49,11 +49,11 @@
 
                 <div class="container wrapper text-center">
                     {% if numCorrect != 10 %}
-                        <a class="btn btn-info mb-3" href="/conversion_practice/{{type}}" role="button">New Conversions</a>
+                        <a class="btn btn-info mb-3" href="/conversion_practice/{{page}}" role="button">New Conversions</a>
                         <input class="btn btn-success mb-3" type="submit" value="Check">
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
                     {% else %}
-                        <a class="btn btn-info mb-3" href="/conversion_practice/{{type}}" role="button">New Conversions</a>
+                        <a class="btn btn-info mb-3" href="/conversion_practice/{{page}}" role="button">New Conversions</a>
                         <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
                     {% endif %}
                 </div>

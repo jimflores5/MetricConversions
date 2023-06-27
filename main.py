@@ -32,13 +32,32 @@ def checkAnswer(correct_answer, answer):
     except:
         return False # Catch non-numerical entries.
 
+def accept_prefix(selection, units, prefixes):
+    # Goal: Limit repeats of a particular conversion.
+    new_option = units[0][1] + units[1][1]
+    flipped_option = units[1][1] + units[0][1]
+    frequency = prefixes.count(new_option) + prefixes.count(flipped_option)
+    if selection == 'no_excuse':
+        # Select 2 each from kilo <-> base, base <-> centi, base <-> milli, centi <-> milli
+        # Select 1 each from kilo <-> centi and kilo <-> milli
+        one_each = ['kilocenti', 'centikilo', 'kilomilli', 'millikilo']
+        if new_option not in prefixes and new_option not in one_each:
+            return True
+        elif new_option in one_each and frequency == 0:
+            return True
+    else:
+        # Have only one example for converting between 2 specific prefixes.
+        if new_option not in prefixes and flipped_option not in prefixes:
+            return True
+    return False
+
 @app.route('/')
 def index():
     session.clear()
     return render_template('index.html',title="Metric Practice")
 
-@app.route('/conversion_practice/<type>', methods=['POST', 'GET'])
-def conversion_practice(type):
+@app.route('/conversion_practice/<page>', methods=['POST', 'GET'])
+def conversion_practice(page):
     practiceList = []
     answers = []
     if request.method == 'POST':
@@ -63,26 +82,36 @@ def conversion_practice(type):
             correction = (numCorrect - session['first_score'])/2
             session['numCorrect'] = session['first_score'] + correction
         percentage = round(session['numCorrect']/session['num_attempted']*100,1)
-        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, type = type, percentage = percentage, numCorrect = numCorrect)
+        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, page = page, percentage = percentage, numCorrect = numCorrect)
 
     else:
         session['first_try'] = True
         session['num_attempted'] = 0
         session['numCorrect'] = 0
+        prefix_choices = []
         while len(practiceList) < 10:
-            units = selectUnits(type)              #Generate starting & ending units
-            # sigFigs = random.randrange(1,4)
-            sigFigs = 3
-            power = random.randrange(-3,4)
-            value = Number(sigFigs, power, units)
-            if value not in practiceList:    
+            units = selectUnits(page)  #Generate starting & ending units
+            if accept_prefix(page, units, prefix_choices):
+                prefix_choices.append(units[0][1]+units[1][1])
+                sigFigs = 3
+                power = random.randrange(-3,4)
+                value = Number(sigFigs, power, units) 
                 practiceList.append(value)
                 session['num_attempted'] += 1
-        percentage = round(session['numCorrect']/session['num_attempted']*100,1)
-        for item in range(len(practiceList)):       #Store values in session as dictionaries
+
+            # units = selectUnits(page)  #Generate starting & ending units
+            # check_prefixes = units[0]+units[1]
+            # if check_prefixes not in prefixes:
+            #     prefixes.append(check_prefixes)
+            #     sigFigs = 3
+            #     power = random.randrange(-3,4)
+            #     value = Number(sigFigs, power, units) 
+            #     practiceList.append(value)
+            #     session['num_attempted'] += 1
+        for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__
 
-        return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, type = type, percentage = percentage)
+        return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, page = page)
 
 if __name__ == '__main__':
     app.run()

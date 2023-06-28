@@ -81,7 +81,7 @@ def conversion_practice(page):
             correction = (numCorrect - session['first_score'])/2
             session['numCorrect'] = session['first_score'] + correction
         percentage = round(session['numCorrect']/session['num_attempted']*100,1)
-        return render_template('conversionPractice.html', practiceList = practiceList, answers = answers, page = page, percentage = percentage, numCorrect = numCorrect)
+        return render_template('conversion_practice.html', practiceList = practiceList, answers = answers, page = page, percentage = percentage, numCorrect = numCorrect)
 
     else:
         session['first_try'] = True
@@ -101,7 +101,7 @@ def conversion_practice(page):
         for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__
 
-        return render_template('conversionPractice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, page = page)
+        return render_template('conversion_practice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, page = page)
 
 if __name__ == '__main__':
     app.run()

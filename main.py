@@ -1,8 +1,7 @@
 import random
 from flask import Flask, request, redirect, render_template, session, flash
-import cgi
 from decimal import Decimal
-from metricManips import Number, selectUnits
+from metric_manips import Number, selectUnits
 
 base_units = ['m','L','g','s']
 prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
@@ -33,7 +32,7 @@ def checkAnswer(correct_answer, answer):
         return False # Catch non-numerical entries.
 
 def accept_prefix(selection, units, prefixes):
-    # Goal: Limit repeats of a particular conversion.
+    # Goal: Limit repeats of a specific conversion.
     new_option = units[0][1] + units[1][1]
     flipped_option = units[1][1] + units[0][1]
     frequency = prefixes.count(new_option) + prefixes.count(flipped_option)
@@ -46,7 +45,7 @@ def accept_prefix(selection, units, prefixes):
         elif new_option in one_each and frequency == 0:
             return True
     else:
-        # Have only one example for converting between 2 specific prefixes.
+        # Allow only one example each for converting between 2 specific prefixes.
         if new_option not in prefixes and flipped_option not in prefixes:
             return True
     return False
@@ -99,15 +98,6 @@ def conversion_practice(page):
                 practiceList.append(value)
                 session['num_attempted'] += 1
 
-            # units = selectUnits(page)  #Generate starting & ending units
-            # check_prefixes = units[0]+units[1]
-            # if check_prefixes not in prefixes:
-            #     prefixes.append(check_prefixes)
-            #     sigFigs = 3
-            #     power = random.randrange(-3,4)
-            #     value = Number(sigFigs, power, units) 
-            #     practiceList.append(value)
-            #     session['num_attempted'] += 1
         for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__
 

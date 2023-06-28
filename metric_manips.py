@@ -1,6 +1,4 @@
 import random
-#from flask import Flask, request, redirect, render_template, session, flash
-import cgi
 from decimal import Decimal
 
 base_units = ['m','L','g','s']

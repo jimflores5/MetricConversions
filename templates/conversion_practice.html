@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container-sm wrapper text-center">
         {% with messages = get_flashed_messages(with_categories=True) %}
-            <h1 class="practice">Complete the following metric conversions</h1>
+            <h1 class="main-heading">Complete the following metric conversions</h1>
             <p class="note">Do not include commas in your answers (e.g. type 1000 instead of 1,000).</p>
             <form action="/conversion_practice/{{page}}" method="post">
                 <table class="table table-striped quiz-table">

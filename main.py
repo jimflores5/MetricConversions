@@ -103,5 +103,17 @@ def conversion_practice(page):
 
         return render_template('conversion_practice.html',title="Metric Conversion Practice", practiceList = practiceList, answers = answers, page = page)
 
+@app.route('/why_metric/<page>', methods=['POST', 'GET'])
+def why_metric(page):
+    return render_template('why_metric.html', title='Why Use Metric?', page = page)
+
+@app.route('/conversions/<page>', methods=['POST', 'GET'])
+def conversions(page):
+    return render_template('conversions.html', title='Level 1 Metric Conversions', page = page)
+
+@app.route('/more_conversions/<page>', methods=['POST', 'GET'])
+def more_conversions(page):
+    return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = page)
+
 if __name__ == '__main__':
     app.run()

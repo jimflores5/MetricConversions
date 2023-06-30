@@ -13,6 +13,27 @@
     color: brown;
 }
 
+.frame-heading {
+    font-size: 1.5vw;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.frame-text {
+    font-size: 1.3vw;
+    text-align: left;
+}
+
+.left-side-label {
+    display: inline-block;
+    text-align: right;
+}
+
+.subheading {
+    font-size: 1.9vw;
+    color: brown;
+}
+
 .record {
     text-align: center;
     font-size: 1.25vw;

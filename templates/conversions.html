@@ -1,5 +1,52 @@
-{% extends "base.html" %}
+{% extends "conversions_base.html" %}
 
 {% block content %}
-Hello, conversions!
+    <section class="wrapper text-center">
+        <h2 class="subheading">
+            {% if page == 1 %}
+                Decimal Jump Method & 'No Excuse' Conversions
+            {% elif page == 2 %}
+                Practice 'No Excuse' Conversions
+            {% elif page == 3 %}
+                Using Dimensional Analysis for Conversions
+            {% else %}
+                Practice Level 1 Conversions
+            {% endif %}
+        </h2>
+        <section class="container-fluid">
+            <section class="row justify-content-center">
+                {% if page%2 == 1 %}
+                    <section class="col-4 text-center border border-dark">
+                        <h3 class="frame-heading">Video and/or text here...</h3>
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        <h3 class="frame-heading">Changeable figures here...</h3>
+                    </section>
+                {% else %}
+                    <section class="col-5 text-center border border-dark">
+                        <h3 class="frame-heading">Instructions</h3>
+                        <p class="frame-text">{{instructions}}</p>
+                    </section>
+                    <section class="col-5 text-center border border-dark">
+                        <h3 class="frame-heading">Form with 3 - 4 practice problems...</h3>
+                        <ol type="a">
+                            {% for item in range(4) %}
+                                <li class="frame-text">
+                                    <label for="{{item}}">{{practiceList[item].value}} {{practiceList[item].units[2]}} =</label>
+                                    <input name="item" type="text" value="">
+                                    <label for="{{item}}">{{practiceList[item].units[3]}}</label>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </section>
+                {% endif %}
+            </section>
+        </section>
+        <hr>
+        <figure class="figure">
+            <h3 class="subheading">Metric Prefixes</h3>
+            <img src="{{url_for('static', filename='metric_chart.png')}}" class="figure-img img-fluid" alt="Metric chart showing prefixes from kilo to milli.">
+            <figcaption class="figure-caption">Figure caption...</figcaption>
+        </figure>
+    </section>
 {% endblock %}

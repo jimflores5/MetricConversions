@@ -109,11 +109,43 @@ def why_metric(page):
 
 @app.route('/conversions/<page>', methods=['POST', 'GET'])
 def conversions(page):
-    return render_template('conversions.html', title='Level 1 Metric Conversions', page = page)
+    page_title = 'Metric Conversion Basics'
+    num_pages = 4
+    template_name = 'conversions'
+    instructions = "Lorem ipsum..."
+    practiceList = []
+    answers = []
+    if request.method == 'POST':
+        pass
+    else:
+        num_problems = 4
+        prefix_choices = []
+        if int(page) == 2:
+            select_from = 'no_excuse'
+        else:
+            select_from = 'standard'
+        while len(practiceList) < num_problems:
+            units = selectUnits(select_from)  #Generate starting & ending units
+            if accept_prefix(select_from, units, prefix_choices):
+                prefix_choices.append(units[0][1]+units[1][1])
+                sigFigs = 2
+                power = random.randrange(-3,4)
+                value = Number(sigFigs, power, units) 
+                practiceList.append(value)
+
+        for item in range(len(practiceList)):  #Store values in session as dictionaries
+            session['practiceList'+str(item)] = practiceList[item].__dict__
+
+    return render_template('conversions.html', title='Level 1 Metric Conversions', page = int(page), 
+                           page_title = page_title, num_pages = num_pages, template = template_name, instructions = instructions,
+                           practiceList = practiceList, answers = answers)
 
 @app.route('/more_conversions/<page>', methods=['POST', 'GET'])
 def more_conversions(page):
-    return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = page)
+    page_title = 'Metric Conversions (cont.)'
+    num_pages = 4
+    template_name = 'more_conversions'
+    return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = int(page), page_title = page_title, num_pages = num_pages, template = template_name)
 
 if __name__ == '__main__':
     app.run()

@@ -2,6 +2,7 @@ import random
 from flask import Flask, request, redirect, render_template, session, flash
 from decimal import Decimal
 from metric_manips import Number, selectUnits
+from copy import deepcopy
 
 base_units = ['m','L','g','s']
 prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
@@ -30,6 +31,19 @@ def checkAnswer(correct_answer, answer):
             return False
     except:
         return False # Catch non-numerical entries.
+
+def generate_question_set(num_questions, select_from, sig_figs = 3):
+    practice_list = []
+    prefix_choices = []
+    while len(practice_list) < num_questions:
+        units = selectUnits(select_from)  #Generate starting & ending units
+        if accept_prefix(select_from, units, prefix_choices):
+            prefix_choices.append(units[0][1]+units[1][1])
+            power = random.randrange(-3,4)
+            value = Number(sig_figs, power, units)
+            practice_list.append(value)
+            session['num_attempted'] += 1
+    return deepcopy(practice_list)
 
 def accept_prefix(selection, units, prefixes):
     # Goal: Limit repeats of a specific conversion.
@@ -61,7 +75,7 @@ def conversion_practice(page):
     answers = []
     if request.method == 'POST':
         numCorrect = 0
-        for item in range(10):
+        for item in range(session['num_attempted']):
             answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
             value_dict = session.get('practiceList'+str(item),None)     #Retrieve original value (dictionary) and return to Number format.
             value = Number(value_dict['sigFigs'], value_dict['power'], value_dict['units'])
@@ -87,16 +101,7 @@ def conversion_practice(page):
         session['first_try'] = True
         session['num_attempted'] = 0
         session['numCorrect'] = 0
-        prefix_choices = []
-        while len(practiceList) < 10:
-            units = selectUnits(page)  #Generate starting & ending units
-            if accept_prefix(page, units, prefix_choices):
-                prefix_choices.append(units[0][1]+units[1][1])
-                sigFigs = 3
-                power = random.randrange(-3,4)
-                value = Number(sigFigs, power, units) 
-                practiceList.append(value)
-                session['num_attempted'] += 1
+        practiceList = generate_question_set(10, page, 3)
 
         for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__
@@ -116,22 +121,33 @@ def conversions(page):
     practiceList = []
     answers = []
     if request.method == 'POST':
-        pass
+        practiceList = []
+        answers = []
+        numCorrect = 0
+        for item in range(session['num_attempted']):
+            answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
+            value_dict = session.get('practiceList'+str(item),None)     #Retrieve original value (dictionary) and return to Number format.
+            value = Number(value_dict['sigFigs'], value_dict['power'], value_dict['units'])
+            value.answer = value_dict['answer']
+            value.value = value_dict['value']
+            practiceList.append(value)   
+            if checkAnswer(practiceList[item].answer, answers[item]):
+                flash('Correct!  :-)', 'correct')
+                numCorrect += 1
+            else:
+                flash('Try again, or click here to reveal the answer.', 'error')
+        return render_template('conversions.html', title='Level 1 Metric Conversions', page = int(page), 
+                           page_title = page_title, num_pages = num_pages, template = template_name, instructions = instructions,
+                           practiceList = practiceList, answers = answers, numCorrect = numCorrect)
     else:
         num_problems = 4
-        prefix_choices = []
+        session['num_attempted'] = 0
         if int(page) == 2:
             select_from = 'no_excuse'
         else:
             select_from = 'standard'
-        while len(practiceList) < num_problems:
-            units = selectUnits(select_from)  #Generate starting & ending units
-            if accept_prefix(select_from, units, prefix_choices):
-                prefix_choices.append(units[0][1]+units[1][1])
-                sigFigs = 2
-                power = random.randrange(-3,4)
-                value = Number(sigFigs, power, units) 
-                practiceList.append(value)
+
+        practiceList = generate_question_set(num_problems, select_from, 2)
 
         for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__

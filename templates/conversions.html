@@ -10,7 +10,7 @@
             {% elif page == 3 %}
                 Using Dimensional Analysis for Conversions
             {% else %}
-                Practice Level 1 Conversions
+                Level 1 Conversion Practice
             {% endif %}
         </h2>
         <section class="container-fluid">
@@ -27,18 +27,68 @@
                         <h3 class="frame-heading">Instructions</h3>
                         <p class="frame-text">{{instructions}}</p>
                     </section>
-                    <section class="col-5 text-center border border-dark">
-                        <h3 class="frame-heading">Form with 3 - 4 practice problems...</h3>
-                        <ol type="a">
-                            {% for item in range(4) %}
-                                <li class="frame-text">
-                                    <label for="{{item}}">{{practiceList[item].value}} {{practiceList[item].units[2]}} =</label>
-                                    <input name="item" type="text" value="">
-                                    <label for="{{item}}">{{practiceList[item].units[3]}}</label>
-                                </li>
-                            {% endfor %}
-                        </ol>
+
+                    <section class="col-6 text-center border border-dark">
+                        {% with messages = get_flashed_messages(with_categories=True) %}
+                        <!-- TODO: For page 2, avoid k <-> c or k <-> m conversions. -->
+                            <form action="/conversions/{{page}}" method="post">
+                                <table class="table quiz-table">
+                                    <tbody>
+                                        {% for index in range(practiceList|length) %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{'abcd'[index]}}.
+                                                </td>
+                                                <td class="text-right col-3" style="color:blue">
+                                                    <label for="answer{{index}}">
+                                                        {{practiceList[index].value}} {{practiceList[index].units[2]}} =
+                                                    </label>
+                                                </td>
+                                                <td class="text-left">
+                                                    <input class="col-8" name="answer{{index}}" type="text" value="{{answers[index]}}" id="answer{{index}}">
+                                                    <label for="answer{{index}}" style="color:blue">
+                                                        {{practiceList[index].units[3]}}
+                                                    </label>
+                                                    {% if messages %}
+                                                        {% set message = messages[index] %}                                        
+                                                        {% if message[0] != 'error' %}
+                                                            <div class='{{message[0]}}' style="font-size: 1.1vw">{{message[1]}}</div>
+                                                        {% else %}
+                                                            <div class="btn-group dropright">
+                                                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1vw; color:red">
+                                                                    <span class='{{message[0]}}'>{{message[1]}}</span>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[index].answer}}</p>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="container wrapper text-center">
+                                    <a class="btn btn-info mb-3" href="/conversions/{{page}}" role="button">New Conversions</a>
+                                    {% if numCorrect != session['num_attempted'] %}
+                                        <input class="btn btn-success mb-3" type="submit" value="Check">
+                                    {% endif %}
+                                </div>
+                            </form>
+                        {% endwith %}
                     </section>
+                    
+                    <!-- <section class="col-5 text-center border border-dark">
+                        <h3 class="frame-heading">Form with 3 - 4 practice problems...</h3>
+                        <div class="settings">
+                            {% for item in range(4) %}
+                                <label for="{{item}}">{{practiceList[item].value}} {{practiceList[item].units[2]}} =</label>
+                                <input name="item" type="text" value="">
+                                <label  class="after-box" for="{{item}}">{{practiceList[item].units[3]}}</label>
+                            {% endfor %}
+                        </div>
+                    </section> -->
                 {% endif %}
             </section>
         </section>

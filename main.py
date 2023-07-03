@@ -50,7 +50,11 @@ def accept_prefix(selection, units, prefixes):
     new_option = units[0][1] + units[1][1]
     flipped_option = units[1][1] + units[0][1]
     frequency = prefixes.count(new_option) + prefixes.count(flipped_option)
-    if selection == 'no_excuse':
+    if selection == 'basic':
+        prevent = ['kilocenti', 'centikilo', 'kilomilli', 'millikilo']
+        if new_option not in prefixes and new_option not in prevent:
+            return True
+    elif selection == 'no_excuse':
         # Select 2 each from kilo <-> base, base <-> centi, base <-> milli, centi <-> milli
         # Select 1 each from kilo <-> centi and kilo <-> milli
         one_each = ['kilocenti', 'centikilo', 'kilomilli', 'millikilo']
@@ -110,7 +114,10 @@ def conversion_practice(page):
 
 @app.route('/why_metric/<page>', methods=['POST', 'GET'])
 def why_metric(page):
-    return render_template('why_metric.html', title='Why Use Metric?', page = page)
+    page_title = 'Metric Conversion Basics'
+    num_pages = 3
+    template_name = 'why_metric'
+    return render_template('why_metric.html', title='Why Use Metric?', page = int(page), page_title = page_title, num_pages = num_pages, template = template_name)
 
 @app.route('/conversions/<page>', methods=['POST', 'GET'])
 def conversions(page):
@@ -143,7 +150,7 @@ def conversions(page):
         num_problems = 4
         session['num_attempted'] = 0
         if int(page) == 2:
-            select_from = 'no_excuse'
+            select_from = 'basic'
         else:
             select_from = 'standard'
 

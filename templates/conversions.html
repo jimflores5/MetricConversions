@@ -4,7 +4,7 @@
     <section class="wrapper text-center">
         <h2 class="subheading">
             {% if page == 1 %}
-                Decimal Jump Method & 'No Excuse' Conversions
+                Decimal Jump Method and 'No Excuse' Conversions
             {% elif page == 2 %}
                 Practice 'No Excuse' Conversions
             {% elif page == 3 %}
@@ -19,13 +19,46 @@
                     <section class="col-4 text-center border border-dark">
                         <h3 class="frame-heading">Video and/or text here...</h3>
                     </section>
-                    <section class="col-4 text-center border border-dark">
-                        <h3 class="frame-heading">Changeable figures here...</h3>
-                    </section>
+                    {% if page == 1 %}
+                        <section class="col-4 text-center border border-dark">
+                            <h3 class="frame-heading">Changing by factors of 10</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='decimal_jump_1.png')}}" class="figure-img img-fluid" alt="Moving right and left across the metric chart.">
+                                <hr>
+                                <img src="{{url_for('static', filename='decimal_jump_2.png')}}" class="figure-img img-fluid" alt="Examples showing the decimal jump method.">
+                            </figure>
+                        </section>
+                        <section class="col-3 text-center border border-dark">
+                            <h3 class="frame-heading">Consider</h3>
+                                <ol type="a" class="list-group frame-text" style="color:purple"><span class="frame-list-heading">For a base to kilo conversion:</span>
+                                    <li class="list-group-item">Which way should the decimal move?</li>
+                                    <li class="list-group-item">How many places?</li>
+                                </ol>
+
+                            <!-- TODO: Add form and answer inputs. -->
+                        </section>
+                    {% else %}
+                        <section class="col-4 text-center border border-dark">
+                            <h3 class="frame-heading">Figure here...</h3>
+                        </section>
+                    {% endif %}
                 {% else %}
                     <section class="col-5 text-center border border-dark">
                         <h3 class="frame-heading">Instructions</h3>
-                        <p class="frame-text">{{instructions}}</p>
+                        <ul class="frame-text">
+                            <li>Complete the following conversions.</li>
+                            <li>Do NOT include commas in your answers.</li>
+                            {% if page == 2 %}
+                                <li style="color:green">Use the decimal jump method, or recall that:</li>
+                                <ul style="color:green">
+                                    <li>1 kilo = 1000 base</li>
+                                    <li>1 base = 100 centi</li>
+                                    <li>1 base = 1000 milli</li>
+                                </ul>
+                            {% else %}
+                                <li style="color:green">Try using dimensional analysis!</li>
+                            {% endif %}
+                        </ul>
                     </section>
 
                     <section class="col-6 text-center border border-dark">
@@ -78,17 +111,6 @@
                             </form>
                         {% endwith %}
                     </section>
-                    
-                    <!-- <section class="col-5 text-center border border-dark">
-                        <h3 class="frame-heading">Form with 3 - 4 practice problems...</h3>
-                        <div class="settings">
-                            {% for item in range(4) %}
-                                <label for="{{item}}">{{practiceList[item].value}} {{practiceList[item].units[2]}} =</label>
-                                <input name="item" type="text" value="">
-                                <label  class="after-box" for="{{item}}">{{practiceList[item].units[3]}}</label>
-                            {% endfor %}
-                        </div>
-                    </section> -->
                 {% endif %}
             </section>
         </section>

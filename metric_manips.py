@@ -21,7 +21,7 @@ def selectUnits(prefixes = 'all'):
     units = []
     base = random.choice(base_units) #Choose base unit.
     while len(units) != 2:              #Pick the starting and ending prefixes.
-        if prefixes == 'no_excuse':
+        if prefixes == 'no_excuse' or prefixes == 'basic':
             new_unit = random.choice(no_excuse_prefixes)
         elif prefixes == 'standard':
             new_unit = random.choice(standard_prefixes)

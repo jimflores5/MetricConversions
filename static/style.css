@@ -24,9 +24,20 @@
     text-align: left;
 }
 
+.frame-list-heading {
+    font-size: 1.4vw;
+    text-align: left;
+    text-decoration: underline;
+    color: black;
+}
+
 .left-side-label {
     display: inline-block;
     text-align: right;
+}
+
+.radio-label {
+    vertical-align: middle;
 }
 
 .subheading {

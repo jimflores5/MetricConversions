@@ -30,16 +30,47 @@
                         </section>
                         <section class="col-3 text-center border border-dark">
                             <h3 class="frame-heading">Consider</h3>
-                                <ol type="a" class="list-group frame-text" style="color:purple"><span class="frame-list-heading">For a base to kilo conversion:</span>
-                                    <li class="list-group-item">Which way should the decimal move?</li>
-                                    <li class="list-group-item">How many places?</li>
-                                </ol>
-
-                            <!-- TODO: Add form and answer inputs. -->
+                            <ol type="a" class="list-group frame-text" style="color:purple"><span class="frame-list-heading">For a base to kilo conversion:</span>
+                                <li class="list-group-item">Which way should the decimal move?</li>
+                                <li class="list-group-item">How many places?</li>
+                            </ol>
+                            <br>
+                            <p>
+                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Click for Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <p class="frame-text">
+                                    To convert from a base unit to kilo, move
+                                    the decimal <strong>3 places to the right</strong>.
+                                </p>
+                            </div>
                         </section>
                     {% else %}
                         <section class="col-4 text-center border border-dark">
-                            <h3 class="frame-heading">Figure here...</h3>
+                            <h3 class="frame-heading">Figure heading here...</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='dim_analysis_1.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from km to cm.">
+                                <hr>
+                                <img src="{{url_for('static', filename='dim_analysis_2.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from mg to dag.">
+                            </figure>
+                        </section>
+                        <section class="col-3 text-center border border-dark">
+                            <h3 class="frame-heading">Consider</h3>
+                            <p class="frame-text">To convert from mm to km in a single step, what values go on the top and bottom of the conversion factor?</p>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='dim_analysis_3.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from mm to km.">
+                            </figure>
+                            <br>
+                            <p>
+                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Click for Answer
+                                </button>
+                            </p>
+                            <figure class="collapse" id="collapseExample">
+                                <img src="{{url_for('static', filename='d_a_3_answer.png')}}" class="figure-img img-fluid" alt="Conversion factor showing 1 km over 1,000,000 mm.">
+                            </figure>
                         </section>
                     {% endif %}
                 {% else %}
@@ -60,10 +91,8 @@
                             {% endif %}
                         </ul>
                     </section>
-
                     <section class="col-6 text-center border border-dark">
                         {% with messages = get_flashed_messages(with_categories=True) %}
-                        <!-- TODO: For page 2, avoid k <-> c or k <-> m conversions. -->
                             <form action="/conversions/{{page}}" method="post">
                                 <table class="table quiz-table">
                                     <tbody>
@@ -114,11 +143,12 @@
                 {% endif %}
             </section>
         </section>
-        <hr>
-        <figure class="figure">
-            <h3 class="subheading">Metric Prefixes</h3>
-            <img src="{{url_for('static', filename='metric_chart.png')}}" class="figure-img img-fluid" alt="Metric chart showing prefixes from kilo to milli.">
-            <figcaption class="figure-caption">Figure caption...</figcaption>
-        </figure>
+        {% if page != 3 %}
+            <hr>
+            <figure class="figure">
+                <h3 class="subheading">Metric Prefixes</h3>
+                <img src="{{url_for('static', filename='metric_chart.png')}}" class="figure-img img-fluid" alt="Metric chart showing prefixes from kilo to milli.">
+            </figure>
+        {% endif %}
     </section>
 {% endblock %}

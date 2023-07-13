@@ -10,14 +10,26 @@
             {% elif page == 3 %}
                 Using Dimensional Analysis for Conversions
             {% else %}
-                Level 1 Conversion Practice
+                Level 1 Practice
             {% endif %}
         </h2>
         <section class="container-fluid">
             <section class="row justify-content-center">
                 {% if page%2 == 1 %}
                     <section class="col-4 text-center border border-dark">
-                        <h3 class="frame-heading">Video and/or text here...</h3>
+                        {% if page == 1 %}
+                            <h3 class="frame-heading">Level 0 Conversions</h3>
+                            <br>
+                            <video width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='decimal_jump.mp4')}}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <h3 class="frame-heading">Level 1 Conversions</h3>
+                            <br>
+                            <video width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='convert_w_dim_analysis.mp4')}}" type="video/mp4">
+                            </video>
+                        {% endif %}
                     </section>
                     {% if page == 1 %}
                         <section class="col-4 text-center border border-dark">
@@ -49,7 +61,7 @@
                         </section>
                     {% else %}
                         <section class="col-4 text-center border border-dark">
-                            <h3 class="frame-heading">Figure heading here...</h3>
+                            <h3 class="frame-heading">Tip: Use [base] as a reference point</h3>
                             <figure class="figure">
                                 <img src="{{url_for('static', filename='dim_analysis_1.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from km to cm.">
                                 <hr>
@@ -121,7 +133,7 @@
                                                                     <span class='{{message[0]}}'>{{message[1]}}</span>
                                                                 </button>
                                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                    <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[index].answer}}</p>
+                                                                    <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[index].answer}} {{practiceList[index].units[3]}}</p>
                                                                 </div>
                                                             </div>
                                                         {% endif %}

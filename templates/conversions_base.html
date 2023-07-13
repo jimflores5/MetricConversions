@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{{title}}</title>
+        <!-- Bootstrap 4.0.0 compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- User-defined CSS -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <style></style>
+    </head>
+
+    <body>
+        <navbar class="btn-toolbar justify-content-between mt-2" role="toolbar">
+            <section class="ml-3">
+                <a class="btn btn-primary" href="/" role="button">Main Menu</a>
+            </section>
+            <section class = 'wrapper text-center'>
+                <h1 class="main-heading">{{page_title}} (page {{page}} of {{num_pages}})</h1>
+            </section>
+            <section class="mr-3" role="group">
+                <div class="btn-group" role="group">
+                    {% if page == 1 %}
+                        <button type="button" class="btn btn-secondary mr-2" disabled>&laquo; Back</button>
+                    {% else %}
+                        <a class="btn btn-secondary mr-2" href="/{{template}}/{{page-1}}" role="button">&laquo; Back</a>
+                    {% endif %}
+                    {% if page == num_pages %}
+                        <button type="button" class="btn btn-secondary mr-2" disabled>Next &raquo;</button>
+                    {% else %}
+                        <a class="btn btn-secondary mr-2" href="/{{template}}/{{page+1}}" role="button">Next &raquo;</a>
+                    {% endif %}
+                </div>
+            </section>
+        </navbar>
+        {% block content %}
+        {% endblock %}
+        <!-- Bootstrap 4.0.0 compiled and minified JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+        <footer class="footer">
+            <div class="container wrapper text-center">
+                <span class="text-muted">Created by Jim Flores, 2019 - 2023</span>
+            </div>
+        </footer>
+    </body>
+</html>

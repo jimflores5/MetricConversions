@@ -1,0 +1,166 @@
+{% extends "conversions_base.html" %}
+
+{% block content %}
+    <section class="wrapper text-center">
+        <h2 class="subheading">
+            {% if page == 1 %}
+                Decimal Jump Method and 'No Excuse' Conversions
+            {% elif page == 2 %}
+                Practice 'No Excuse' Conversions
+            {% elif page == 3 %}
+                Using Dimensional Analysis for Conversions
+            {% else %}
+                Level 1 Practice
+            {% endif %}
+        </h2>
+        <section class="container-fluid">
+            <section class="row justify-content-center">
+                {% if page%2 == 1 %}
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 1 %}
+                            <h3 class="frame-heading">Level 0 Conversions</h3>
+                            <br>
+                            <video width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='decimal_jump.mp4')}}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <h3 class="frame-heading">Level 1 Conversions</h3>
+                            <br>
+                            <video width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='convert_w_dim_analysis.mp4')}}" type="video/mp4">
+                            </video>
+                        {% endif %}
+                    </section>
+                    {% if page == 1 %}
+                        <section class="col-4 text-center border border-dark">
+                            <h3 class="frame-heading">Changing by factors of 10</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='decimal_jump_1.png')}}" class="figure-img img-fluid" alt="Moving right and left across the metric chart.">
+                                <hr>
+                                <img src="{{url_for('static', filename='decimal_jump_2.png')}}" class="figure-img img-fluid" alt="Examples showing the decimal jump method.">
+                            </figure>
+                        </section>
+                        <section class="col-3 text-center border border-dark">
+                            <h3 class="frame-heading">Consider</h3>
+                            <ol type="a" class="list-group frame-text" style="color:purple"><span class="frame-list-heading">For a base to kilo conversion:</span>
+                                <li class="list-group-item">Which way should the decimal move?</li>
+                                <li class="list-group-item">How many places?</li>
+                            </ol>
+                            <br>
+                            <p>
+                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Click for Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <p class="frame-text">
+                                    To convert from a base unit to kilo, move
+                                    the decimal <strong>3 places to the right</strong>.
+                                </p>
+                            </div>
+                        </section>
+                    {% else %}
+                        <section class="col-4 text-center border border-dark">
+                            <h3 class="frame-heading">Tip: Use [base] as a reference point</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='dim_analysis_1.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from km to cm.">
+                                <hr>
+                                <img src="{{url_for('static', filename='dim_analysis_2.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from mg to dag.">
+                            </figure>
+                        </section>
+                        <section class="col-3 text-center border border-dark">
+                            <h3 class="frame-heading">Consider</h3>
+                            <p class="frame-text">To convert from mm to km in a single step, what values go on the top and bottom of the conversion factor?</p>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='dim_analysis_3.png')}}" class="figure-img img-fluid" alt="Showing dimensional analysis setup to convert from mm to km.">
+                            </figure>
+                            <br>
+                            <p>
+                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Click for Answer
+                                </button>
+                            </p>
+                            <figure class="collapse" id="collapseExample">
+                                <img src="{{url_for('static', filename='d_a_3_answer.png')}}" class="figure-img img-fluid" alt="Conversion factor showing 1 km over 1,000,000 mm.">
+                            </figure>
+                        </section>
+                    {% endif %}
+                {% else %}
+                    <section class="col-5 text-center border border-dark">
+                        <h3 class="frame-heading">Instructions</h3>
+                        <ul class="frame-text">
+                            <li>Complete the following conversions.</li>
+                            <li>Do NOT include commas in your answers.</li>
+                            {% if page == 2 %}
+                                <li style="color:green">Use the decimal jump method, or recall that:</li>
+                                <ul style="color:green">
+                                    <li>1 kilo = 1000 base</li>
+                                    <li>1 base = 100 centi</li>
+                                    <li>1 base = 1000 milli</li>
+                                </ul>
+                            {% else %}
+                                <li style="color:green">Try using dimensional analysis!</li>
+                            {% endif %}
+                        </ul>
+                    </section>
+                    <section class="col-6 text-center border border-dark">
+                        {% with messages = get_flashed_messages(with_categories=True) %}
+                            <form action="/conversions/{{page}}" method="post">
+                                <table class="table quiz-table">
+                                    <tbody>
+                                        {% for index in range(practiceList|length) %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{'abcd'[index]}}.
+                                                </td>
+                                                <td class="text-right col-3" style="color:blue">
+                                                    <label for="answer{{index}}">
+                                                        {{practiceList[index].value}} {{practiceList[index].units[2]}} =
+                                                    </label>
+                                                </td>
+                                                <td class="text-left">
+                                                    <input class="col-8" name="answer{{index}}" type="text" value="{{answers[index]}}" id="answer{{index}}">
+                                                    <label for="answer{{index}}" style="color:blue">
+                                                        {{practiceList[index].units[3]}}
+                                                    </label>
+                                                    {% if messages %}
+                                                        {% set message = messages[index] %}                                        
+                                                        {% if message[0] != 'error' %}
+                                                            <div class='{{message[0]}}' style="font-size: 1.1vw">{{message[1]}}</div>
+                                                        {% else %}
+                                                            <div class="btn-group dropright">
+                                                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1vw; color:red">
+                                                                    <span class='{{message[0]}}'>{{message[1]}}</span>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[index].answer}} {{practiceList[index].units[3]}}</p>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="container wrapper text-center">
+                                    <a class="btn btn-info mb-3" href="/conversions/{{page}}" role="button">New Conversions</a>
+                                    {% if numCorrect != session['num_attempted'] %}
+                                        <input class="btn btn-success mb-3" type="submit" value="Check">
+                                    {% endif %}
+                                </div>
+                            </form>
+                        {% endwith %}
+                    </section>
+                {% endif %}
+            </section>
+        </section>
+        {% if page != 3 %}
+            <hr>
+            <figure class="figure">
+                <h3 class="subheading">Metric Prefixes</h3>
+                <img src="{{url_for('static', filename='metric_chart.png')}}" class="figure-img img-fluid" alt="Metric chart showing prefixes from kilo to milli.">
+            </figure>
+        {% endif %}
+    </section>
+{% endblock %}

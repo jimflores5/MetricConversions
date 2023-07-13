@@ -1,10 +1,47 @@
-.practice {
+
+.button-list-heading {
+    font-size: 1.9vw;
+}
+
+.main-heading {
     text-decoration: underline;
     font-size: 2.5vw;
 }
 
 .note {
     font-size: 1.5vw;
+    color: brown;
+}
+
+.frame-heading {
+    font-size: 1.5vw;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.frame-text {
+    font-size: 1.3vw;
+    text-align: left;
+}
+
+.frame-list-heading {
+    font-size: 1.4vw;
+    text-align: left;
+    text-decoration: underline;
+    color: black;
+}
+
+.left-side-label {
+    display: inline-block;
+    text-align: right;
+}
+
+.radio-label {
+    vertical-align: middle;
+}
+
+.subheading {
+    font-size: 1.9vw;
     color: brown;
 }
 

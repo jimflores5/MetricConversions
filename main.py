@@ -62,6 +62,12 @@ def accept_prefix(selection, units, prefixes):
             return True
         elif new_option in one_each and frequency == 0:
             return True
+    elif selection == 'mega':
+        # Each question must include a Mega, micro, or nano prefix.
+        for option in units:
+            if new_option not in prefixes and ('mega' in option or 'micro' in option or 'nano' in option):
+                return True
+        return False
     else:
         # Allow only one example each for converting between 2 specific prefixes.
         if new_option not in prefixes and flipped_option not in prefixes:
@@ -124,12 +130,9 @@ def conversions(page):
     page_title = 'Metric Conversion Basics'
     num_pages = 4
     template_name = 'conversions'
-    instructions = "Lorem ipsum..."
     practiceList = []
     answers = []
     if request.method == 'POST':
-        practiceList = []
-        answers = []
         numCorrect = 0
         for item in range(session['num_attempted']):
             answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
@@ -144,7 +147,7 @@ def conversions(page):
             else:
                 flash('Try again, or click here to reveal the answer.', 'error')
         return render_template('conversions.html', title='Level 1 Metric Conversions', page = int(page), 
-                           page_title = page_title, num_pages = num_pages, template = template_name, instructions = instructions,
+                           page_title = page_title, num_pages = num_pages, template = template_name,
                            practiceList = practiceList, answers = answers, numCorrect = numCorrect)
     else:
         num_problems = 4
@@ -153,22 +156,54 @@ def conversions(page):
             select_from = 'basic'
         else:
             select_from = 'standard'
-
+        
         practiceList = generate_question_set(num_problems, select_from, 2)
 
         for item in range(len(practiceList)):  #Store values in session as dictionaries
             session['practiceList'+str(item)] = practiceList[item].__dict__
 
     return render_template('conversions.html', title='Level 1 Metric Conversions', page = int(page), 
-                           page_title = page_title, num_pages = num_pages, template = template_name, instructions = instructions,
+                           page_title = page_title, num_pages = num_pages, template = template_name,
                            practiceList = practiceList, answers = answers)
 
 @app.route('/more_conversions/<page>', methods=['POST', 'GET'])
 def more_conversions(page):
-    page_title = 'Metric Conversions (cont.)'
-    num_pages = 4
+    page_title = 'Larger and Smaller Prefixes'
+    num_pages = 2
     template_name = 'more_conversions'
-    return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = int(page), page_title = page_title, num_pages = num_pages, template = template_name)
+    practiceList = []
+    answers = []
+    if request.method == 'POST':
+        numCorrect = 0
+        for item in range(session['num_attempted']):
+            answers.append(request.form['answer'+str(item)])  #Pull user answers into a list.
+            value_dict = session.get('practiceList'+str(item),None)     #Retrieve original value (dictionary) and return to Number format.
+            value = Number(value_dict['sigFigs'], value_dict['power'], value_dict['units'])
+            value.answer = value_dict['answer']
+            value.value = value_dict['value']
+            practiceList.append(value)   
+            if checkAnswer(practiceList[item].answer, answers[item]):
+                flash('Correct!  :-)', 'correct')
+                numCorrect += 1
+            else:
+                flash('Try again, or click here to reveal the answer.', 'error')
+        return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = int(page), 
+                           page_title = page_title, num_pages = num_pages, template = template_name,
+                           practiceList = practiceList, answers = answers, numCorrect = numCorrect)
+    else:
+        num_problems = 4
+        session['num_attempted'] = 0
+        select_from = 'mega'
+
+        if int(page)%2 == 0:
+            practiceList = generate_question_set(num_problems, select_from, 2)
+
+        for item in range(len(practiceList)):  #Store values in session as dictionaries
+            session['practiceList'+str(item)] = practiceList[item].__dict__
+
+    return render_template('more_conversions.html', title='Level 2 Metric Conversions', page = int(page),
+                           page_title = page_title, num_pages = num_pages, template = template_name,
+                           practiceList = practiceList, answers = answers)
 
 if __name__ == '__main__':
     app.run()

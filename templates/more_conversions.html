@@ -1,5 +1,119 @@
 {% extends "conversions_base.html" %}
 
 {% block content %}
-<h1>Hello, level 2 conversions!</h1>
+    <section class="wrapper text-center">
+        <h2 class="subheading">
+            {% if page == 1 %}
+                Beyond kilo and milli
+            {% else %}
+                Conversions with Mega, micro, and nano
+            {% endif %}
+        </h2>
+        <section class="container-fluid">
+            <section class="row justify-content-center">
+                {% if page%2 == 1 %}
+                    <section class="col-4 text-center border border-dark">
+                        <h3 class="frame-heading">Level 2 Conversions</h3>
+                        <br>
+                        <p>Video player here...</p>
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        <h3 class="frame-heading">More powers of 10</h3>
+                        <figure class="figure">
+                            <img src="{{url_for('static', filename='mega_jump_1.png')}}" class="figure-img img-fluid" alt="Above kilo or below milli, each jump on the metric chart corresponds to three powers of 10 (3 decimal places).">
+                            <hr>
+                            <img src="{{url_for('static', filename='mega_jump_2.png')}}" class="figure-img img-fluid" alt="Examples showing conversions from kilo to Mega, milli to micro, and nano to micro to milli.">
+                        </figure>
+                    </section>
+                    <section class="col-3 text-center border border-dark">
+                        <h3 class="frame-heading">Consider</h3>
+                        <ol type="a" class="list-group frame-text" style="color:purple"><span class="frame-list-heading">For a base to Mega conversion:</span>
+                            <li class="list-group-item">Which way should the decimal move?</li>
+                            <li class="list-group-item">How many places?</li>
+                        </ol>
+                        <br>
+                        <p>
+                            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Click for Answer
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                            <p class="frame-text">
+                                To convert from a base unit to Mega, move
+                                the decimal <strong>6 places to the left</strong>.
+                            </p>
+                        </div>
+                    </section>
+                {% else %}
+                    <section class="col-5 text-center border border-dark">
+                        <h3 class="frame-heading">Instructions</h3>
+                        <ul class="frame-text">
+                            <li>Complete the following conversions.</li>
+                            <li>Do NOT include commas in your answers.</li>
+                            <li>Feel free to use the decimal jump method OR dimensional analysis.</li>
+                            <ul style="color:green"> Recall that:
+                                <li>1 Mega = 1,000,000 base</li>
+                                <li>1 base = 1,000,000 micro</li>
+                                <li>1 base = 1,000,000,000 nano</li>
+                            </ul>
+                        </ul>
+                    </section>
+                    <section class="col-6 text-center border border-dark">
+                        {% with messages = get_flashed_messages(with_categories=True) %}
+                            <form action="/more_conversions/{{page}}" method="post">
+                                <table class="table quiz-table">
+                                    <tbody>
+                                        {% for index in range(practiceList|length) %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{'abcd'[index]}}.
+                                                </td>
+                                                <td class="text-right col-3" style="color:blue">
+                                                    <label for="answer{{index}}">
+                                                        {{practiceList[index].value}} {{practiceList[index].units[2]}} =
+                                                    </label>
+                                                </td>
+                                                <td class="text-left">
+                                                    <input class="col-8" name="answer{{index}}" type="text" value="{{answers[index]}}" id="answer{{index}}">
+                                                    <label for="answer{{index}}" style="color:blue">
+                                                        {{practiceList[index].units[3]}}
+                                                    </label>
+                                                    {% if messages %}
+                                                        {% set message = messages[index] %}                                        
+                                                        {% if message[0] != 'error' %}
+                                                            <div class='{{message[0]}}' style="font-size: 1.1vw">{{message[1]}}</div>
+                                                        {% else %}
+                                                            <div class="btn-group dropright">
+                                                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1vw; color:red">
+                                                                    <span class='{{message[0]}}'>{{message[1]}}</span>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <p class="dropdown-item" style="font-size: 1.5vw; color:red">{{practiceList[index].answer}} {{practiceList[index].units[3]}}</p>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="container wrapper text-center">
+                                    <a class="btn btn-info mb-3" href="/more_conversions/{{page}}" role="button">New Conversions</a>
+                                    {% if numCorrect != session['num_attempted'] %}
+                                        <input class="btn btn-success mb-3" type="submit" value="Check">
+                                    {% endif %}
+                                </div>
+                            </form>
+                        {% endwith %}
+                    </section>
+                {% endif %}
+            </section>
+        </section>
+        <hr>
+        <figure class="figure">
+            <h3 class="subheading">Metric Prefixes</h3>
+            <img src="{{url_for('static', filename='mega_chart.png')}}" class="figure-img img-fluid" alt="Metric chart showing prefixes from Mega to nano.">
+        </figure>
+    </section>
 {% endblock %}

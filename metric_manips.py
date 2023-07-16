@@ -5,6 +5,7 @@ base_units = ['m','L','g','s']
 all_prefixes = [('M','Mega',6), ('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
 standard_prefixes = [('k','kilo',3), ('h','hecto',2), ('da','deca',1), (base_units,'base',0), ('d','deci',-1), ('c','centi',-2), ('m','milli',-3)]
 no_excuse_prefixes = [('k','kilo',3), (base_units,'base',0), ('c','centi',-2), ('m','milli',-3)]
+mega_prefixes = [('M','Mega',6), ('k','kilo',3), (base_units,'base',0), ('c','centi',-2), ('m','milli',-3), ('µ','micro',-6), ('n','nano',-9)]
 
 class Number():
     def __init__(self, sigFigs, power, units):
@@ -25,6 +26,8 @@ def selectUnits(prefixes = 'all'):
             new_unit = random.choice(no_excuse_prefixes)
         elif prefixes == 'standard':
             new_unit = random.choice(standard_prefixes)
+        elif prefixes == 'mega':
+            new_unit = random.choice(mega_prefixes)
         else:
             new_unit = random.choice(all_prefixes)
         if new_unit not in units:

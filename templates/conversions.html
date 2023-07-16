@@ -20,13 +20,13 @@
                         {% if page == 1 %}
                             <h3 class="frame-heading">Level 0 Conversions</h3>
                             <br>
-                            <video width="100%" height="auto" controls>
+                            <video class="border border-dark" width="100%" height="auto" controls>
                                 <source src="{{url_for('static', filename='decimal_jump.mp4')}}" type="video/mp4">
                             </video>
                         {% else %}
                             <h3 class="frame-heading">Level 1 Conversions</h3>
                             <br>
-                            <video width="100%" height="auto" controls>
+                            <video class="border border-dark" width="100%" height="auto" controls>
                                 <source src="{{url_for('static', filename='convert_w_dim_analysis.mp4')}}" type="video/mp4">
                             </video>
                         {% endif %}

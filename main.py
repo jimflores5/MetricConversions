@@ -65,7 +65,7 @@ def accept_prefix(selection, units, prefixes):
     elif selection == 'mega':
         # Each question must include a Mega, micro, or nano prefix.
         for option in units:
-            if new_option not in prefixes and ('mega' in option or 'micro' in option or 'nano' in option):
+            if new_option not in prefixes and ('Mega' in option or 'micro' in option or 'nano' in option):
                 return True
         return False
     else:

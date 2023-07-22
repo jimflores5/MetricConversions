@@ -120,10 +120,24 @@ def conversion_practice(page):
 
 @app.route('/why_metric/<page>', methods=['POST', 'GET'])
 def why_metric(page):
-    page_title = 'Metric Conversion Basics'
-    num_pages = 3
+    page_title = 'Why Metric?'
+    num_pages = 4
     template_name = 'why_metric'
-    return render_template('why_metric.html', title='Why Use Metric?', page = int(page), page_title = page_title, num_pages = num_pages, template = template_name)
+    page = int(page)
+    if request.method == 'POST':
+        pass
+    else:
+        if page == 1:
+            subheading = 'Who Uses the Metric System?'
+        elif page == 2:
+            subheading = 'Length Units'
+        elif page == 3:
+            subheading = 'Volume Units'
+        else:
+            subheading = 'Rutabagas!'
+
+    return render_template('why_metric.html', title='Why Use Metric?', page = page, page_title = page_title, 
+                           num_pages = num_pages, template = template_name, subheading = subheading)
 
 @app.route('/conversions/<page>', methods=['POST', 'GET'])
 def conversions(page):

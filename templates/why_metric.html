@@ -1,5 +1,74 @@
 {% extends "conversions_base.html" %}
 
 {% block content %}
-<h1 class="subheading">Hello, metric system!</h1>
+    <section class="wrapper text-center">
+        <h1 class="subheading">{{subheading}}</h1>
+        <section class="container-fluid frame-width">
+            <section class="row justify-content-center">
+                {% if page == 1 or page == 4 %}
+                    <section class="col-6 text-center border border-dark">
+                        <h3 class="frame-heading">Video clip here...</h3>
+                    </section>
+                    <section class="col-6 text-center border border-dark">
+                        <h3 class="frame-heading">Figure and text here...</h3>
+                    </section>
+                {% else %}
+                    <section class="col-4 text-center border border-dark">
+                        <h3 class="frame-heading">Video clip here...</h3>
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">Some US Length Units</h3>
+                        {% elif page == 3 %}
+                            <h3 class="frame-heading">Some US Volume Units</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='us_vols_2.png')}}" class="figure-img img-fluid" alt="Showing US volume examples from gallon to teaspoons.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">Express 1/3 of a gallon in terms of the above units.</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answers
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <ul type="circle" class="frame-text" style="color:purple">
+                                    <li>256 teaspoons</li>
+                                    <li>85 tablespoons + 1 teaspoon</li>
+                                    <li>5 cups + 5 tablespoons + 1 teaspoon</li>
+                                    <li>1 quart + 1 cup + 5 tablespoons + 1 teaspoon</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">Metric Lengths</h3>
+                        {% elif page == 3 %}
+                            <h3 class="frame-heading">Some Metric Volumes</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='metric_vols.png')}}" class="figure-img img-fluid" alt="Showing metric volume examples from liters to milliliters.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">Express 1/5 of a liter in terms of the above units.</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answers
+                                </button>
+                            </p>
+                            <div class="collapse frame-text" id="collapseExample2">
+                                <ul type="circle" class="frame-text" style="color:purple">
+                                    <li>2 deciliters</li>
+                                    <li>20 centiliters</li>
+                                    <li>200 milliliters</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endif %}
+            </section>
+        </section>
+    </section>
 {% endblock %}

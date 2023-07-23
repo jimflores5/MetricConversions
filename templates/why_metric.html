@@ -10,7 +10,25 @@
                         <h3 class="frame-heading">Video clip here...</h3>
                     </section>
                     <section class="col-6 text-center border border-dark">
-                        <h3 class="frame-heading">Figure and text here...</h3>
+                        {% if page == 1 %}
+                            <h3 class="frame-heading">Of all the classrooms in all the towns in all the world...</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='world.png')}}" class="figure-img img-fluid" alt="Equate a famous painting to 1 kiloword.">
+                            </figure>
+                        {% else %}
+                            <h3 class="frame-heading">Consider</h3>
+                            <p class="frame-text text-center">Use the metric system to show, <span class="frame-text" style="color:blue">"A picture is worth a thousand words."</span></p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample3">
+                                <figure class="figure">
+                                    <img src="{{url_for('static', filename='kiloword.png')}}" class="figure-img img-fluid" alt="Equate a famous painting to 1 kiloword.">
+                                </figure>
+                            </div>
+                        {% endif %}
                     </section>
                 {% else %}
                     <section class="col-4 text-center border border-dark">

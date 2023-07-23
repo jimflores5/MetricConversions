@@ -134,7 +134,7 @@ def why_metric(page):
         elif page == 3:
             subheading = 'Volume Units'
         else:
-            subheading = 'Rutabagas!'
+            subheading = 'Because metric is a LOT more convenient!'
 
     return render_template('why_metric.html', title='Why Use Metric?', page = page, page_title = page_title, 
                            num_pages = num_pages, template = template_name, subheading = subheading)

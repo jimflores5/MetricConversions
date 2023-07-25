@@ -128,11 +128,11 @@ def why_metric(page):
         pass
     else:
         if page == 1:
-            subheading = 'Who Uses the Metric System?'
+            subheading = 'Who uses the metric system?'
         elif page == 2:
-            subheading = 'Length Units'
+            subheading = 'Length units'
         elif page == 3:
-            subheading = 'Volume Units'
+            subheading = 'Volume units'
         else:
             subheading = 'Because metric is a LOT more convenient!'
 

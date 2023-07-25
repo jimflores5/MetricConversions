@@ -32,7 +32,19 @@
                     </section>
                 {% else %}
                     <section class="col-4 text-center border border-dark">
-                        <h3 class="frame-heading">Video clip here...</h3>
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">A Problem with Consistency</h3>
+                            <br>
+                            <video class="border border-dark" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='length_units.mp4')}}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <h3 class="frame-heading">Set the Volume to 11?</h3>
+                            <br>
+                            <video class="border border-dark" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='vol_units.mp4')}}" type="video/mp4">
+                            </video>
+                        {% endif %}
                     </section>
                     <section class="col-4 text-center border border-dark">
                         {% if page == 2 %}

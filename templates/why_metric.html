@@ -1,5 +1,140 @@
 {% extends "conversions_base.html" %}
 
 {% block content %}
-<h1 class="subheading">Hello, metric system!</h1>
+    <section class="wrapper text-center">
+        <h1 class="subheading">{{subheading}}</h1>
+        <section class="container-fluid frame-width">
+            <section class="row justify-content-center">
+                {% if page == 1 or page == 4 %}
+                    <section class="col-6 text-center border border-dark">
+                        {% if page == 1 %}
+                            <video class="border border-dark intro-vid" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='who_uses_metric.mp4')}}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <video class="border border-dark intro-vid" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='metric_intro.mp4')}}" type="video/mp4">
+                            </video>
+                        {% endif %}
+                    </section>
+                    <section class="col-6 text-center border border-dark">
+                        {% if page == 1 %}
+                            <h3 class="frame-heading">Of all the classrooms in all the towns in all the world...</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='world.png')}}" class="figure-img img-fluid" alt="Equate a famous painting to 1 kiloword.">
+                            </figure>
+                        {% else %}
+                            <h3 class="frame-heading">Consider</h3>
+                            <p class="frame-text text-center">Use the metric system to show, <span class="frame-text" style="color:blue">"A picture is worth a thousand words."</span></p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample3">
+                                <figure class="figure">
+                                    <img src="{{url_for('static', filename='kiloword.png')}}" class="figure-img img-fluid" alt="Equate a famous painting to 1 kiloword.">
+                                </figure>
+                            </div>
+                        {% endif %}
+                    </section>
+                {% else %}
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">A Problem with Consistency</h3>
+                            <br>
+                            <video class="border border-dark" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='length_units.mp4')}}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <h3 class="frame-heading">Set the Volume to 11?</h3>
+                            <br>
+                            <video class="border border-dark" width="100%" height="auto" controls>
+                                <source src="{{url_for('static', filename='vol_units.mp4')}}" type="video/mp4">
+                            </video>
+                        {% endif %}
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">Some US Length Units</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='us_lengths.png')}}" class="figure-img img-fluid" alt="Showing US length examples from inches to miles, with a gap between yards and miles.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">How many miles are there in 20,000 inches?</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample3">
+                                <p class="frame-text text-center" style="color:purple">About 0.316 mile, but this is tricky to solve without a calculator.</p>
+                            </div>
+                        {% elif page == 3 %}
+                            <h3 class="frame-heading">Some US Volume Units</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='us_vols.png')}}" class="figure-img img-fluid" alt="Showing US volume examples from gallon to teaspoons.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">Express 1/3 of a gallon in terms of the units above.</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answers
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <ul type="circle" class="frame-text" style="color:purple">
+                                    <li>256 teaspoons</li>
+                                    <li>85 tablespoons + 1 teaspoon</li>
+                                    <li>5 cups + 5 tablespoons + 1 teaspoon</li>
+                                    <li>1 quart + 1 cup + 5 tablespoons + 1 teaspoon</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </section>
+                    <section class="col-4 text-center border border-dark">
+                        {% if page == 2 %}
+                            <h3 class="frame-heading">Some Metric Lengths</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='metric_lengths.png')}}" class="figure-img img-fluid" alt="Showing metric length units from meters to millimeters.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">How many meters are there in 20,000 millimeters?</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answer
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample4">
+                                <p class="frame-text text-center" style="color:purple">Exactly 20 meters.</p>
+                            </div>
+                        {% elif page == 3 %}
+                            <h3 class="frame-heading">Some Metric Volumes</h3>
+                            <figure class="figure">
+                                <img src="{{url_for('static', filename='metric_vols.png')}}" class="figure-img img-fluid" alt="Showing metric volume examples from liters to milliliters.">
+                            </figure>
+                            <hr>
+                            <h4 class="frame-subheading">Consider</h4>
+                            <p class="frame-text">Express 1/5 of a liter in terms of the units above.</p>
+                            <p>
+                                <button class="btn btn-info reveal-button" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                                    Reveal Answers
+                                </button>
+                            </p>
+                            <div class="collapse frame-text" id="collapseExample2">
+                                <ul type="circle" class="frame-text" style="color:purple">
+                                    <li>2 deciliters</li>
+                                    <li>20 centiliters</li>
+                                    <li>200 milliliters</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endif %}
+            </section>
+        </section>
+    </section>
 {% endblock %}

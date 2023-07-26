@@ -3,6 +3,7 @@
         "centi",
         "centikilo",
         "deca",
+        "gunicorn",
         "hecto",
         "kilocenti",
         "kilomilli",

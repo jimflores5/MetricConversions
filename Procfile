@@ -1,1 +1,1 @@
-web: gunicorn why-metric:app
+web: gunicorn main:app
